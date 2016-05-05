@@ -52,16 +52,16 @@ class ReadingScore:
 
     def flesch(self, text):
         avg_syllables, avg_words = self.get_syllables_word_counts(text)
-        return 206.835 - (1.015 * avg_words) - (84.6 * avg_syllables)
+        return max(0, 206.835 - (1.015 * avg_words) - (84.6 * avg_syllables))
 
     def flesch_kinkade(self, text):
         avg_syllables, avg_words = self.get_syllables_word_counts(text)
-        return (0.39 * avg_words) + (11.8 * avg_syllables) - 15.59
+        return max(0, (0.39 * avg_words) + (11.8 * avg_syllables) - 15.59)
 
     def fog(self, text):
         avg_syllables, avg_words = self.get_syllables_word_counts(text)
         pct_hard_words = self.get_percent_hard_words(text)
-        return 0.4 * (avg_syllables + pct_hard_words)
+        return max(0, 0.4 * (avg_syllables + pct_hard_words))
 
     def smog(self, text):
         syll = lambda w:len(''.join(c if c in"aeiouy"else' 'for c in w.rstrip('e')).split())
@@ -81,7 +81,7 @@ class ReadingScore:
                 if syllables >= 3:
                     n_hard_words += 1
         
-        return 3 + (round(math.sqrt(n_hard_words) / 10) * 10)
+        return max(0, 3 + (round(math.sqrt(n_hard_words) / 10) * 10))
 
     def coleman_liau(self, text):
         return 0
